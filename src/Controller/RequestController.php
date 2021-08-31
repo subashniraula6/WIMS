@@ -26,6 +26,7 @@ class RequestController extends AbstractController
     public function getAllRequests(RequestRepository $requestRepository)
     {
         $roles = $this->getUser()->getRoles();
+
         
         // Check if current user is admin
         if(in_array('ROLE_ADMIN', $roles)){
@@ -39,14 +40,13 @@ class RequestController extends AbstractController
                 );
                 return new JsonResponse($response, 404);  
             }
-
             // handling circular reference error and ignoring attributes
             $defaultContext = [
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object, $format, $context)
                 {
                     return $object->getType();
                 },
-                AbstractNormalizer::IGNORED_ATTRIBUTES => ["createdAt", "joinedAt"]
+                AbstractNormalizer::ATTRIBUTES => ["createdAt", "joinedAt"]
             ];
             $encoders = [new JsonEncoder()];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
@@ -56,12 +56,18 @@ class RequestController extends AbstractController
     
             $response = array(
                 'code' => 200,
-                'message' => 'Successfull!',
                 'errors' => null,
                 'result' => json_decode($result)
             );
             return new JsonResponse($response, 200);    
         }
+
+        $response = array(
+            'code' => 401,
+            'errors' => 'unauthorized',
+            'result' => null
+        );
+        return new JsonResponse($response, 401);    
     }
     
 
@@ -106,7 +112,7 @@ class RequestController extends AbstractController
 
     // admin views users request
     /**
-     * @Route("/api/admin/request/{id}", name="get_request", methods={"GET"})
+     * @Route("/api/admin/requests/{id}", name="get_request", methods={"GET"})
      */
     public function getRequest($id, RequestRepository $requestRepository)
     {
@@ -115,6 +121,7 @@ class RequestController extends AbstractController
         // Check if current user is admin
         if(in_array('ROLE_ADMIN', $roles)){ 
             $request = $requestRepository->find($id);
+            //check if request id empty
             if(empty($request))
             {
                 $response = array(
@@ -138,14 +145,21 @@ class RequestController extends AbstractController
            
     
             $result = $serializer->serialize($request, 'json');
+            $em = $this->getDoctrine()->getRepository(UserRequest::class);
+        
             $response = array(
                 'code' => 200,
-                'message' => 'Successfull!',
                 'errors' => null,
                 'result' => json_decode($result)
             );
             return new JsonResponse($response, 200);
         }
+        $response = array(
+            'code' => 401,
+            'errors' => 'unauthorized',
+            'result' => null
+        );
+        return new JsonResponse($response, 401);    
     }
 
     // Make request
@@ -153,6 +167,17 @@ class RequestController extends AbstractController
     * @Route("/api/requests", name="make_request", methods={"POST"})
     */
     public function makeRequest(Request $request, SerializerInterface $serializer){
+        // ensure if current user is not admin
+        $roles = $this->getUser()->getRoles();
+        if(in_array('ROLE_ADMIN', $roles)){
+            $response = array(
+                'code' => 401,
+                'errors' => 'Cannot make request by admin!',
+                'result' => null
+            );
+            return new JsonResponse($response, 401);  
+        }
+
         $em = $this->getDoctrine()
                          ->getManager();
         
@@ -180,6 +205,61 @@ class RequestController extends AbstractController
         return new JsonResponse($response, 200); 
     }
 
+    /**
+     * @Route("/api/admin/requests/{id}/{action}", name="accept_request", methods={"PUT"})
+     */
+    public function acceptRequest($id, $action, Request $request, SerializerInterface $serializer)
+    {
+        $roles = $this->getUser()->getRoles();
+        // Check if current user is admin
+        if(in_array('ROLE_ADMIN', $roles)){ 
+            $entityManager = $this->getDoctrine()->getManager();
+                        
+            $request = $entityManager->getRepository(UserRequest::class)
+                        ->find($id);
+
+            if(empty($request)){
+                $response = array(
+                    'code' => 404,
+                    'errors' => "Request not found",
+                    'result' => null
+                );  
+                return new JsonResponse($response, 404);           
+            }
+            if($action !== 'accept' && $action !== 'reject'){
+                $response = array(
+                    'code' => 404,
+                    'errors' => "Bad request",
+                    'result' => null
+                );  
+                return new JsonResponse($response, 404);   
+            }else if($action === 'accept'){
+                $request->setStatus('accepted');
+                /////////////////// send email
+            } else if($action = 'reject'){
+                $request->setStatus('Rejected');
+                ////////////////// send email
+            }
+
+            $entityManager->persist($request);
+            $entityManager->flush();
+
+            $response = array(
+                'code'=> 200,
+                'message'=>'Inventory updated!',
+                'errors'=>null,
+                'result'=>null
+            );
+            return new JsonResponse($response, 200); 
+        }
+        $response = array(
+            'code' => 401,
+            'errors' => 'unauthorized',
+            'result' => null
+        );
+        return new JsonResponse($response, 401);
+    }
+
     // Delete request
      /**
     * @Route("/api/requests/{id}", name="delete_request", methods={"DELETE"})
@@ -201,7 +281,6 @@ class RequestController extends AbstractController
         $em->flush();
         $response = array(
             'code' => 200,
-            'message' => 'Request deleted',
             'errors' => null,
             'result' => null
         );
