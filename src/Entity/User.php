@@ -67,9 +67,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $requests;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Inventory::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $inventories;
+
     public function __construct()
     {
         $this->requests = new ArrayCollection();
+        $this->inventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,5 +263,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Inventory[]
+     */
+    public function getInventories(): Collection
+    {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory): self
+    {
+        if (!$this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory): self
+    {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getUser() === $this) {
+                $inventory->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

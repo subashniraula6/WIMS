@@ -64,6 +64,12 @@ class Inventory
      */
     private $servicings;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->servicings = new ArrayCollection();
@@ -202,6 +208,18 @@ class Inventory
                 $servicing->setInventory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
