@@ -7,11 +7,47 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Request as UserRequest;
+use App\Repository\RequestRepository;
+use Normalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class RequestController extends AbstractController
 {
+
+    /**
+     * @Route("/api/requests", name="get_requests", methods={"GET"})
+     */
+    public function getRequests(RequestRepository $requestRepository)
+    {
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object, $format, $context)
+            {
+                return $object->getType();
+            },
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ["createdAt", "joinedAt"]
+        ];
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
+        $serializer = new Serializer($normalizers, $encoders);
+        
+        $requests = $requestRepository->findAll();
+
+        $result = $serializer->serialize($requests, 'json');
+
+        $response = array(
+            'code' => 200,
+            'message' => 'Successfull!',
+            'errors' => null,
+            'result' => json_decode($result)
+        );
+        return new JsonResponse($response, 200);
+    }
+
     // Make request
      /**
     * @Route("/api/requests", name="make_request", methods={"POSt"})
