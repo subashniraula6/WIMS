@@ -19,11 +19,70 @@ use Symfony\Component\Serializer\SerializerInterface;
 class RequestController extends AbstractController
 {
 
+    // admin views all requests
+    /**
+     * @Route("/api/admin/requests", name="get_all_requests", methods={"GET"})
+     */
+    public function getAllRequests(RequestRepository $requestRepository)
+    {
+        $roles = $this->getUser()->getRoles();
+        
+        // Check if current user is admin
+        if(in_array('ROLE_ADMIN', $roles)){
+            $requests = $requestRepository->findAll();
+            // Check if requests is exists
+            if(empty($requests)){
+                $response = array(
+                    'code' => 404,
+                    'errors' => 'No requests found!',
+                    'result' => null
+                );
+                return new JsonResponse($response, 404);  
+            }
+
+            // handling circular reference error and ignoring attributes
+            $defaultContext = [
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object, $format, $context)
+                {
+                    return $object->getType();
+                },
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ["createdAt", "joinedAt"]
+            ];
+            $encoders = [new JsonEncoder()];
+            $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
+            $serializer = new Serializer($normalizers, $encoders);
+    
+            $result = $serializer->serialize($requests, 'json');
+    
+            $response = array(
+                'code' => 200,
+                'message' => 'Successfull!',
+                'errors' => null,
+                'result' => json_decode($result)
+            );
+            return new JsonResponse($response, 200);    
+        }
+    }
+    
+
+    // User views requests
     /**
      * @Route("/api/requests", name="get_requests", methods={"GET"})
      */
     public function getRequests(RequestRepository $requestRepository)
     {
+        $requests = $this->getUser()->getRequests();
+        // Check if requests exists
+        if(empty($requests)){
+            $response = array(
+                'code' => 404,
+                'errors' => 'No requests found!',
+                'result' => null
+            );
+            return new JsonResponse($response, 404);  
+        }
+
+        // handling circular reference error and ignoring attributes
         $defaultContext = [
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object, $format, $context)
             {
@@ -34,23 +93,64 @@ class RequestController extends AbstractController
         $encoders = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
         $serializer = new Serializer($normalizers, $encoders);
-        
-        $requests = $requestRepository->findAll();
 
         $result = $serializer->serialize($requests, 'json');
 
         $response = array(
             'code' => 200,
-            'message' => 'Successfull!',
             'errors' => null,
             'result' => json_decode($result)
         );
-        return new JsonResponse($response, 200);
+        return new JsonResponse($response, 200);    
+    }    
+
+    // admin views users request
+    /**
+     * @Route("/api/admin/request/{id}", name="get_request", methods={"GET"})
+     */
+    public function getRequest($id, RequestRepository $requestRepository)
+    {
+        $roles = $this->getUser()->getRoles();
+        
+        // Check if current user is admin
+        if(in_array('ROLE_ADMIN', $roles)){ 
+            $request = $requestRepository->find($id);
+            if(empty($request))
+            {
+                $response = array(
+                    'code' => 404,
+                    'errors' => 'Request not found',
+                    'result' => null
+                );
+                return new JsonResponse($response, 404);
+            }
+
+            $defaultContext = [
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object, $format, $context)
+                {
+                    return $object->getType();
+                },
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ["createdAt", "joinedAt"]
+            ];
+            $encoders = [new JsonEncoder()];
+            $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
+            $serializer = new Serializer($normalizers, $encoders);
+           
+    
+            $result = $serializer->serialize($request, 'json');
+            $response = array(
+                'code' => 200,
+                'message' => 'Successfull!',
+                'errors' => null,
+                'result' => json_decode($result)
+            );
+            return new JsonResponse($response, 200);
+        }
     }
 
     // Make request
      /**
-    * @Route("/api/requests", name="make_request", methods={"POSt"})
+    * @Route("/api/requests", name="make_request", methods={"POST"})
     */
     public function makeRequest(Request $request, SerializerInterface $serializer){
         $em = $this->getDoctrine()
@@ -74,7 +174,6 @@ class RequestController extends AbstractController
         $em->flush();
         $response = array(
             'code' => 200,
-            'message' => 'Request created',
             'errors' => null,
             'result' => null
         );
@@ -85,11 +184,19 @@ class RequestController extends AbstractController
      /**
     * @Route("/api/requests/{id}", name="delete_request", methods={"DELETE"})
     */
-    public function deleteRequest(UserRequest $request, SerializerInterface $serializer){
-       
+    public function deleteRequest($id, SerializerInterface $serializer){
+       $request = $this->getDoctrine()->getRepository(UserRequest::class)->find($id);
+        if(empty($request)){
+             $response = array(
+                 'code' => 404,
+                 'errors' => 'No request found!',
+                 'result' => null
+             );
+             return new JsonResponse($response, 404);  
+        }
         $em = $this->getDoctrine()
                          ->getManager();
-        
+       
         $em->remove($request);
         $em->flush();
         $response = array(
