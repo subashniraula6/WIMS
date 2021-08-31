@@ -55,8 +55,7 @@ class Inventory
     private $disposeAt = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=1000, nullable=false)
      */
     private $category;
 
@@ -64,6 +63,12 @@ class Inventory
      * @ORM\OneToMany(targetEntity=Servicing::class, mappedBy="inventory")
      */
     private $servicings;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="inventories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -165,12 +170,12 @@ class Inventory
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function getCategory():string
     {
         return $this->category;
     }
 
-    public function setCategory(?Category $category): self
+    public function setCategory(?string $category): self
     {
         $this->category = $category;
 
@@ -203,6 +208,18 @@ class Inventory
                 $servicing->setInventory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

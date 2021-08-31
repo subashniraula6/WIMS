@@ -34,6 +34,7 @@ class AuthController extends AbstractController
         $user->setDesignation($designation);
         $user->setJoinedAt(new DateTime('NOW'));
         $user->setStatus('employee');
+        $user->setRoles(['ROLE_USER']);
         $user->setFullName($fullName);
 
         $em->persist($user);
