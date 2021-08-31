@@ -1,7 +1,7 @@
 import React from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Components/Header/Header";
-import Login from "./Components/Login/Login";
+import { Login } from "./Components/Login/Login";
 import SignUp from "./Components/SignUp/SignUp";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
@@ -14,26 +14,19 @@ import Home from "./Components/pages/home/Home";
 function App() {
 	return (
 		<>
-			{/* <Header /> */}
-			<Topbar />
-			<div className="container">
-				<Sidebar />
+			<Header />
+			{/* <Topbar /> */}
+			<div className="container p-10 d-flex justify-content-center">
 				<Switch>
-					<Route exact path="/home">
-						<Home />
-					</Route>
+					<Route exact path="/" component={Login} />
+					<Route exact path="/home" component={Home} />
+					<Route exact path="/user" component={User} />
+					<Route exact path="/login" component={Login} />
+					<Route exact path="/signup" component={SignUp} />
+					<Route exact path="/admin" component={admin} />
 				</Switch>
+				{/* <Sidebar /> */}
 			</div>
-			{/* <div className="outer">
-				<div className="inner">
-					<Switch>
-						<Route exact path="/" component={Login} />
-						<Route exact path="/login" component={Login} />
-						<Route exact path="/signup" component={SignUp} />
-						<Route exact path="/admin" component={admin} />
-					</Switch>
-				</div>
-			</div> */}
 		</>
 	);
 }

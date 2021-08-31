@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class SignUp extends Component {
 	render() {
 		return (
-			<form>
+			<form className="form p-5 formContainer">
 				<h3>Sign Up</h3>
 
 				<div className="form-group">
@@ -38,7 +38,7 @@ export default class SignUp extends Component {
 					/>
 				</div>
 
-				<button type="submit" className="btn btn-dark btn-lg btn-block">
+				<button type="submit" className="btn btn-dark btn-lg btn-block my-3">
 					Sign Up
 				</button>
 				<p className="forgot-password text-right">
