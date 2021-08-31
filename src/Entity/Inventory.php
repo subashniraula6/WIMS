@@ -55,8 +55,7 @@ class Inventory
     private $disposeAt = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="inventories")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=1000, nullable=false)
      */
     private $category;
 
@@ -165,12 +164,12 @@ class Inventory
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function getCategory():string
     {
         return $this->category;
     }
 
-    public function setCategory(?Category $category): self
+    public function setCategory(?string $category): self
     {
         $this->category = $category;
 

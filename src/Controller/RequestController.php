@@ -25,10 +25,8 @@ class RequestController extends AbstractController
      */
     public function getAllRequests(RequestRepository $requestRepository)
     {
-        $roles = $this->getUser()->getRoles();
-
-        
         // Check if current user is admin
+        $roles = $this->getUser()->getRoles();
         if(in_array('ROLE_ADMIN', $roles)){
             $requests = $requestRepository->findAll();
             // Check if requests is exists
