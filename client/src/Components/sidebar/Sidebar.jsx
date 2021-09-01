@@ -4,10 +4,9 @@ import { LineStyle, Home, People, Add, Timer } from "@material-ui/icons";
 
 export default function Sidebar() {
 	return (
-		<div className="sidebar">
+		<div className="sidebar border border-danger h-30">
 			<div className="sidebarWrapper">
 				<div className="sidebarMenu">
-					<h3 classname="sidebarTitle">Dashboard</h3>
 					<ul className="sidebarList">
 						<li className="sidebarListItem active">
 							<Home />

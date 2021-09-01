@@ -1,31 +1,39 @@
-import React from "react";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import Header from "./Components/Header/Header";
-import { Login } from "./Components/Login/Login";
-import SignUp from "./Components/SignUp/SignUp";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
-import admin from "./Components/dashboard/admin";
-import Topbar from "./Components/topbar/topbar";
-import Sidebar from "./Components/sidebar/Sidebar";
-import User from "./Components/pages/user/user";
-import Home from "./Components/pages/home/Home";
+import Header from "./Components/Header/Header";
+import Topbar from "./Components/topbar/Topbar";
+import Dashboard from "./Components/dashboard/Dashboard";
+import Landing from "./Components/landingPage/Landing";
+import { Route, Switch } from "react-router-dom";
+import Login from "./Components/Login/Login";
+import PrivateRoute from "./Components/routing/PrivateRoute";
 
 function App() {
 	return (
 		<>
-			<Header />
-			{/* <Topbar /> */}
-			<div className="container p-10 d-flex justify-content-center">
+			<Topbar />
+			<div className="container">
+				{/* <Header /> */}
 				<Switch>
-					<Route exact path="/" component={Login} />
-					<Route exact path="/home" component={Home} />
-					<Route exact path="/user" component={User} />
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/signup" component={SignUp} />
-					<Route exact path="/admin" component={admin} />
+					<Route exact path="/" component={Landing} />
+					<PrivateRoute
+						exact
+						path="/login"
+						component={Login}
+						auth={{
+							isAuthenticated: true,
+							isLoading: false,
+						}}
+					/>
+					<PrivateRoute
+						auth={{
+							isAuthenticated: true,
+							isLoading: false,
+						}}
+						exact
+						path="/dashboard"
+						component={Dashboard}
+					/>
 				</Switch>
-				{/* <Sidebar /> */}
 			</div>
 		</>
 	);

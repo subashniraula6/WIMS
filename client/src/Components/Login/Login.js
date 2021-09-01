@@ -1,6 +1,6 @@
 import "./Login.css";
 
-export const Login = function () {
+const Login = function () {
 	return (
 		<form className="form p-5 formContainer ">
 			<h3 className="h2">Log in</h3>
@@ -47,3 +47,5 @@ export const Login = function () {
 		</form>
 	);
 };
+
+export default Login;
