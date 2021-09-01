@@ -1,0 +1,10 @@
+.forgotPW {
+	text-decoration: none;
+}
+
+.formContainer {
+	background-color: orange;
+	border-radius: 5px;
+	box-shadow: 0px 2px 4px rgb(233, 148, 12);
+	margin-top: 50px;
+}
