@@ -72,6 +72,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $inventories;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->requests = new ArrayCollection();
@@ -291,6 +296,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $inventory->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

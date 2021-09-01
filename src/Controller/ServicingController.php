@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Serializer;
 class ServicingController extends AbstractController
 {
     /**
-     * @Route("/api/admin/servicings", name="get_all_servicing")
+     * @Route("/api/admin/servicings", name="get_servicing")
      */
     public function getAllServicing()
     {
@@ -36,9 +36,9 @@ class ServicingController extends AbstractController
         $encoders = [new JsonEncoder()];
             $defaultContext = [
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                    return $object->getName();
+                    return null;
                 },
-                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'inventory', 'name', 'brand ', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'durationInMonth', 'serviceAt']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
     
