@@ -8,7 +8,7 @@ export default function Sidebar() {
 			<div className="sidebarWrapper">
 				<div className="sidebarMenu">
 					<ul className="sidebarList">
-						<li className="sidebarListItem active">
+						<li className="sidebarListItem">
 							<Home />
 							Home
 						</li>

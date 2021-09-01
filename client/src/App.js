@@ -6,15 +6,16 @@ import Landing from "./Components/landingPage/Landing";
 import { Route, Switch } from "react-router-dom";
 import Login from "./Components/Login/Login";
 import PrivateRoute from "./Components/routing/PrivateRoute";
-
+import Footer from "./Components/footer/footer";
 function App() {
 	return (
 		<>
 			<Topbar />
-			<div className="container">
+			<div className="container-fluid">
 				{/* <Header /> */}
 				<Switch>
 					<Route exact path="/" component={Landing} />
+
 					<PrivateRoute
 						exact
 						path="/login"
@@ -34,6 +35,7 @@ function App() {
 						component={Dashboard}
 					/>
 				</Switch>
+				<Footer />
 			</div>
 		</>
 	);
