@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Inventory;
+use App\Entity\Servicing;
 use App\Entity\User;
+use DateInterval;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -156,8 +158,8 @@ class InventoryController extends AbstractController
             $parameters = json_decode($request -> getContent(), true); 
             $user_email = $parameters['user_email'];
 
+            //Allocating user
             $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $user_email]);
-
             if(empty($user)){
                 $response = array(
                     'code' => 404,
@@ -166,13 +168,23 @@ class InventoryController extends AbstractController
                 );
                 return new JsonResponse($response, 404);
             }
-            
             $inventory-> setUser($user);
 
             $inventory->setCreatedAt(new DateTime('NOW'));
             $inventory->setStatus('new');
 
+            //Adding Servicing
+            $servicing_duration = $parameters['servicing_duration'];
+            $servicing = new Servicing();
+            $servicing->setStatus('not required');
+            $servicing->setDurationInMonth($servicing_duration);
 
+            $date = new DateTime('NOW');
+            $date->add(new DateInterval('P'.$servicing_duration.'M'));
+            dump($date);      
+            $servicing->setServiceAt($date); 
+
+            $inventory->setServicing($servicing);
             $em = $this->getDoctrine()->getManager();
             $em -> persist($inventory);
 
@@ -224,12 +236,22 @@ class InventoryController extends AbstractController
             !empty($parameters['model']) ? $inventory->setModel($parameters['model']) : null;
             !empty($parameters['description']) ? $inventory->setDescription($parameters['description']) : null;
 
+            // change user
             $new_user_email = $parameters['user_email'];
-
             $new_user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $new_user_email]);
         
             if($inventory->getUser() !== $new_user){
                 $inventory->setUser($new_user);
+            }
+
+            $servicing = $inventory->getServicing();
+            //add service date
+            $addedMonth = $parameters['addedMonth'];
+            if($addedMonth !== 0){
+                $date = new DateTime('NOW');
+                $date->add(new DateInterval('P'.$addedMonth.'M'));
+                $servicing->setServiceAt($date); 
+                $servicing->setDurationInMonth($addedMonth);
             }
             $entityManager->flush();
 
@@ -272,6 +294,10 @@ class InventoryController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $inventory->setStatus("disposed");
             $inventory->setDisposeAt(new \DateTime('NOW'));
+
+            // chande servicing status
+            $inventory->getServicing()->setStatus("disposed");
+
             $em->persist($inventory);
             $em->flush();
 
@@ -314,6 +340,10 @@ class InventoryController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $inventory->setStatus("new");
             $inventory->removeDisposeAt();
+
+            // chande servicing status
+            $inventory->getServicing()->setStatus("not required");
+
             $em->persist($inventory);
             $em->flush();
 

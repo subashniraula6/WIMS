@@ -60,20 +60,15 @@ class Inventory
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Servicing::class, mappedBy="inventory")
-     */
-    private $servicings;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="inventories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
-    public function __construct()
-    {
-        $this->servicings = new ArrayCollection();
-    }
+    /**
+     * @ORM\OneToOne(targetEntity=Servicing::class, mappedBy="inventory", cascade={"persist", "remove"})
+     */
+    private $servicing;
 
     public function getId(): ?int
     {
@@ -182,36 +177,6 @@ class Inventory
         return $this;
     }
 
-    /**
-     * @return Collection|Servicing[]
-     */
-    public function getServicings(): Collection
-    {
-        return $this->servicings;
-    }
-
-    public function addServicing(Servicing $servicing): self
-    {
-        if (!$this->servicings->contains($servicing)) {
-            $this->servicings[] = $servicing;
-            $servicing->setInventory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeServicing(Servicing $servicing): self
-    {
-        if ($this->servicings->removeElement($servicing)) {
-            // set the owning side to null (unless already changed)
-            if ($servicing->getInventory() === $this) {
-                $servicing->setInventory(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -220,6 +185,23 @@ class Inventory
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getServicing(): ?Servicing
+    {
+        return $this->servicing;
+    }
+
+    public function setServicing(Servicing $servicing): self
+    {
+        // set the owning side of the relation if necessary
+        if ($servicing->getInventory() !== $this) {
+            $servicing->setInventory($this);
+        }
+
+        $this->servicing = $servicing;
 
         return $this;
     }
