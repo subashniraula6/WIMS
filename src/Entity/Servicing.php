@@ -28,7 +28,12 @@ class Servicing
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Inventory::class, inversedBy="servicings")
+     * @ORM\Column(type="integer")
+     */
+    private $durationInMonth;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Inventory::class, inversedBy="servicing", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $inventory;
@@ -62,12 +67,24 @@ class Servicing
         return $this;
     }
 
+    public function getDurationInMonth(): ?int
+    {
+        return $this->durationInMonth;
+    }
+
+    public function setDurationInMonth(int $durationInMonth): self
+    {
+        $this->durationInMonth = $durationInMonth;
+
+        return $this;
+    }
+
     public function getInventory(): ?Inventory
     {
         return $this->inventory;
     }
 
-    public function setInventory(?Inventory $inventory): self
+    public function setInventory(Inventory $inventory): self
     {
         $this->inventory = $inventory;
 
