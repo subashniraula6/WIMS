@@ -153,6 +153,7 @@ class InventoryController extends AbstractController
         $roles = $this->getUser()->getRoles();
         // Check if current user is admin
         if(in_array('ROLE_ADMIN', $roles)){ 
+            dump($this->getUser());
             $inventory = $serializer->deserialize($request->getContent(), Inventory::class, 'json');
             
             $parameters = json_decode($request -> getContent(), true); 

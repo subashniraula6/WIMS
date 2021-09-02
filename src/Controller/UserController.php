@@ -168,7 +168,7 @@ class UserController extends AbstractController
 
     // Remove/Revive user
     /**
-    * @Route("/api/admin/users/{id}/{action}", name="remove_user", methods={"PUT"}, requirements={"id"="\d+"})
+    * @Route("/api/admin/users/{id}/{action}", name="manage_user", methods={"PUT"}, requirements={"id"="\d+"})
     */
     public function manageUser($id, $action, Request $request){
         // Check if current user is admin
