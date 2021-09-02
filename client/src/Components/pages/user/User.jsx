@@ -2,6 +2,7 @@ import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import "./user.css";
+
 export default function User() {
 	const columns = [
 		{ field: "id", headerName: "ID", width: 100 },
@@ -82,13 +83,14 @@ export default function User() {
 
 	return (
 		<div classname="userTable">
-			<DataGrid
+			{/* <DataGrid
 				rows={rows}
 				columns={columns}
 				pageSize={5}
 				checkboxSelection
 				disableSelectionOnClick
-			/>
+			/> */}
+			<h2 className='user'>Users page</h2>
 		</div>
 	);
 }

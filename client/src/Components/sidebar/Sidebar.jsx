@@ -1,32 +1,36 @@
 import React from "react";
 import "./sidebar.css";
 import { LineStyle, Home, People, Add, Timer } from "@material-ui/icons";
+import {Link} from 'react-router-dom'
 
 export default function Sidebar() {
 	return (
-		<div className="sidebar border border-danger h-30">
+		<div className="sidebar border border-warning h-20">
 			<div className="sidebarWrapper">
 				<div className="sidebarMenu">
 					<ul className="sidebarList">
 						<li className="sidebarListItem">
-							<Home />
-							Home
-						</li>
-						<li className="sidebarListItem">
+							<Link to='/dashboard/user' className='nav-link d-flex'>
 							<People />
-							Users
+								Users
+							</Link>
 						</li>
 						<li className="sidebarListItem">
-							<LineStyle />
-							Inventory
+							<Link to='/dashboard/inventories' className='nav-link d-flex'>
+								<LineStyle />Inventory
+							</Link>
 						</li>
 						<li className="sidebarListItem">
-							<Add />
-							Request
+							<Link to='/dashboard/inventories' className='nav-link d-flex'>
+								<Add />
+								Requests
+							</Link>
 						</li>
 						<li className="sidebarListItem">
-							<Timer />
-							Servicing
+							<Link to='/dashboard/inventories' className='nav-link d-flex'>
+								<Timer />
+								Servicings
+							</Link>
 						</li>
 					</ul>
 				</div>

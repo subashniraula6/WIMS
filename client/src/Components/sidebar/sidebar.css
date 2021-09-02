@@ -1,6 +1,6 @@
 .sidebar {
 	flex: 1;
-	height: 50vh;
+	height: 35vh;
 	background-color: orange;
 	position: sticky;
 	top: 50px;
@@ -24,11 +24,13 @@
 }
 
 .sidebarListItem {
-	padding: 5px;
+	padding: 2px;
 	cursor: pointer;
 	display: flex;
+	justify-content: flex-start;
 	align-items: center;
 	border-radius: 10px;
+	text-decoration: none;
 }
 .sidebarListItem.active,
 .sidebarListItem:hover {

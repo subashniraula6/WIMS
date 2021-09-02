@@ -92,12 +92,14 @@ class InventoryController extends AbstractController
 
         $serializer = new Serializer($normalizers, $encoders);
         $data = $serializer->serialize($inventories, 'json');
+        
         $response = array(
             'code' => 200,
             'errors' => null,
             'result' => json_decode($data)
         );
-            return new JsonResponse($response, 200);
+
+        return new JsonResponse($response, 200);
     }
     
     /**
