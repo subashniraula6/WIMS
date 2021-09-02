@@ -99,7 +99,9 @@ class InventoryController extends AbstractController
             'result' => json_decode($data)
         );
 
-        return new JsonResponse($response, 200);
+        return new JsonResponse($response, 200, ['Access-Control-Allow-Origin: *', 
+        "Access-Control-Allow-Headers: Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method",
+        "Access-Control-Allow-Methods: *"]);
     }
     
     /**
