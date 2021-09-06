@@ -13,6 +13,7 @@ import NoRoute from "./Components/pages/NoRoute";
 import AdminRoute from "./Components/routing/AdminRoute";
 import UserRoute from './Components/routing/UserRoute';
 import Inventory from './Components/Inventory/Inventory';
+import AdminInventories from './Components/pages/inventoriesList/AdminInventories'
 
 function App() {
 	const dispatch = useDispatch();
@@ -30,6 +31,11 @@ function App() {
 				<AdminRoute
 					exact
 					path="/dashboard/users"
+					component={Dashboard}
+				/>
+				<AdminRoute
+					exact
+					path="/dashboard/inventories"
 					component={Dashboard}
 				/>
 				<UserRoute

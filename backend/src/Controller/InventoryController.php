@@ -45,7 +45,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
     
@@ -86,7 +86,7 @@ class InventoryController extends AbstractController
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                 return $object->getName();
             },
-            AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
+            AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
         ];
         $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
@@ -129,7 +129,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
             $serializer = new Serializer($normalizers, $encoders);

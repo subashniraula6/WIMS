@@ -3,6 +3,7 @@ import "./sidebar.css";
 import { LineStyle, People, Add, Timer } from "@material-ui/icons";
 import {Link, useLocation} from 'react-router-dom'
 
+
 export default function Sidebar() {
 	const location = useLocation();
 	console.log(location.pathname)
@@ -19,7 +20,7 @@ export default function Sidebar() {
 						</li>
 						<li className={`${location.pathname==='/dashboard/inventories' ? "active": ""} sidebarListItem`}>
 							<Link to='/dashboard/inventories' className='nav-link d-flex'>
-								<LineStyle />My Inventories
+								<LineStyle />Inventories
 							</Link>
 						</li>
 						<li className={`${location.pathname==='/dashboard/requests' ? "active": ""} sidebarListItem`}>

@@ -2,6 +2,8 @@ import React from "react";
 import Sidebar from "../sidebar/Sidebar";
 import { Route, Switch } from "react-router-dom";
 import UserList from "../pages/user/UserList";
+import AdminRoute from "../routing/AdminRoute";
+import AdminInventories from "../pages/inventoriesList/AdminInventories";
 
 export default function Dashboard() {
 	return (
@@ -15,7 +17,7 @@ export default function Dashboard() {
 					<div className="col-lg-10">
 						<Switch>
 							<Route exact path="/dashboard/users" component={UserList} />
-							{/* <Route exact path="/dashboard/signup" component={SignUp} /> */}
+							<Route exact path="/dashboard/inventories" component={AdminInventories} />
 						</Switch>
 					</div>
 				</div>
