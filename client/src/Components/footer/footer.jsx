@@ -10,7 +10,7 @@ const Footer = () => {
 					<MDBCol md="6">
 						<h5 className="title">About Us</h5>
 						<h2>Wolfmatrix</h2>
-						<p>Sanepa,Lalitpur,Nepal</p>
+						<p>Sanepa, Lalitpur, Nepal</p>
 						<p>Inventory Management @ Wolfmatrix</p>
 					</MDBCol>
 					<MDBCol md="6">

@@ -1,9 +1,22 @@
 import React from "react";
 import "./topbar.css";
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {logoutUser} from '../Redux/actions/authActions';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 export default function Topbar() {
+	const isAuthenticated = useSelector(store => store.authReducer.isAuthenticated);
+	const dispatch = useDispatch();
+	const location = useLocation();
+	function handleLogout(){
+		try {
+			dispatch(logoutUser());
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return (
 		<div className="topbar shadow mb-4 bg-white rounded px-2">
 			<div className="topbarWrapper">
@@ -13,21 +26,19 @@ export default function Topbar() {
 					</Link>
 				</div>
 				<div className="topRight">
-					<div className="topbarIconContainer">
-						<NotificationsNone />
-						<span className="topIconBadge">2</span>
-					</div>
-					<div className="topbarIconContainer">
-						<Language />
-					</div>
-					<div className="topbarIconContainer">
-						<Settings />
-					</div>
-					<img
-						src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"
-						alt="PP"
-						className="topAvatar"
-					/>
+					{
+						isAuthenticated ? 
+						<Link to='/login' 
+							onClick={handleLogout}
+							className='text-danger nav-link'
+						>
+						<ExitToAppIcon />Logout
+						</Link> 
+						:
+						<Link to='/login' className='nav-link '>
+						<i className="bi bi-box-arrow-in-right"></i>Login
+						</Link>
+					}
 				</div>
 			</div>
 		</div>

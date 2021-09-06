@@ -1,6 +1,6 @@
 import React from "react";
 import "./sidebar.css";
-import { LineStyle, Home, People, Add, Timer } from "@material-ui/icons";
+import { LineStyle, People, Add, Timer } from "@material-ui/icons";
 import {Link} from 'react-router-dom'
 
 export default function Sidebar() {
@@ -10,7 +10,7 @@ export default function Sidebar() {
 				<div className="sidebarMenu">
 					<ul className="sidebarList">
 						<li className="sidebarListItem">
-							<Link to='/dashboard/user' className='nav-link d-flex'>
+							<Link to='/dashboard/users' className='nav-link d-flex'>
 							<People />
 								Users
 							</Link>

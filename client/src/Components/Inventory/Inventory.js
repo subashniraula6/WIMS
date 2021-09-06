@@ -1,14 +1,9 @@
 import React from "react";
 
-const Inventory = ({ details }) => {
-	console.log(details);
+const Inventory = () => {
 	return (
 		<>
-			<div className="card">
-				<div className="card-body">
-					<img src={details.img_url} />
-				</div>
-			</div>
+			<h1>Inventory page</h1>
 		</>
 	);
 };

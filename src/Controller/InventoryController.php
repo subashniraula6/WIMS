@@ -45,7 +45,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName']
+                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
     
@@ -86,7 +86,7 @@ class InventoryController extends AbstractController
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                 return $object->getName();
             },
-            AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName']
+            AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
         ];
         $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
@@ -129,7 +129,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName']
+                AbstractNormalizer::ATTRIBUTES => ['name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
             $serializer = new Serializer($normalizers, $encoders);
@@ -157,7 +157,6 @@ class InventoryController extends AbstractController
         $roles = $this->getUser()->getRoles();
         // Check if current user is admin
         if(in_array('ROLE_ADMIN', $roles)){ 
-            dump($this->getUser());
             $inventory = $serializer->deserialize($request->getContent(), Inventory::class, 'json');
             
             $parameters = json_decode($request -> getContent(), true); 
@@ -185,22 +184,16 @@ class InventoryController extends AbstractController
             $servicing->setDurationInMonth($servicing_duration);
 
             $date = new DateTime('NOW');
-            $date->add(new DateInterval('P'.$servicing_duration.'M'));
-            dump($date);      
+            $date->add(new DateInterval('P'.$servicing_duration.'M'));      
             $servicing->setServiceAt($date); 
-
             $inventory->setServicing($servicing);
+            
             $em = $this->getDoctrine()->getManager();
             $em -> persist($inventory);
-
             $em -> flush();
 
-            $response=array(
-                'code'=> 201,
-                'errors'=>null,
-                'result'=>null
-            );
-            return new JsonResponse($response, 201);
+            // return new created inventory
+            return $this->getInventory($inventory->getId());
         }
         $response = array(
             'code' => 401,
@@ -240,6 +233,7 @@ class InventoryController extends AbstractController
             $inventory->setCategory($parameters['category']);
             !empty($parameters['model']) ? $inventory->setModel($parameters['model']) : null;
             !empty($parameters['description']) ? $inventory->setDescription($parameters['description']) : null;
+            $inventory->setSerialNumber($parameters['serialNumber']);
 
             // change user
             $new_user_email = $parameters['user_email'];
@@ -260,12 +254,8 @@ class InventoryController extends AbstractController
             }
             $entityManager->flush();
 
-            $response = array(
-                'code'=> 200,
-                'errors'=>null,
-                'result'=>null
-            );
-            return new JsonResponse($response, 200); 
+            // return new created inventory
+            return $this->getInventory($inventory->getId());
         }
         $response = array(
             'code' => 401,
@@ -276,9 +266,9 @@ class InventoryController extends AbstractController
     }
 
     /**
-     * @Route("/api/admin/inventories/{id}/dispose", name="dispose_inventory", methods={"PUT"})
+     * @Route("/api/admin/inventories/{id}/{action}", name="manage_inventory", methods={"PUT"})
      */
-    public function deleteInventory($id, Request $request, SerializerInterface $serializer)
+    public function removeInventory($id, $action, Request $request, SerializerInterface $serializer)
     {
         $roles = $this->getUser()->getRoles();
         // Check if current user is admin
@@ -297,67 +287,21 @@ class InventoryController extends AbstractController
             }           
             
             $em = $this->getDoctrine()->getManager();
-            $inventory->setStatus("disposed");
-            $inventory->setDisposeAt(new \DateTime('NOW'));
-
-            // chande servicing status
-            $inventory->getServicing()->setStatus("disposed");
-
-            $em->persist($inventory);
-            $em->flush();
-
-            $response = array(
-                'code'=> 0,
-                'errors'=>null,
-                'result'=>null
-            );
-            return new JsonResponse($response, 200); 
-        }
-        $response = array(
-            'code' => 401,
-            'errors' => 'unauthorized',
-            'result' => null
-        );
-        return new JsonResponse($response, 401);
-    }
-
-    /**
-     * @Route("/api/admin/inventories/{id}/revive", name="delete_inventory", methods={"PUT"})
-     */
-    public function reviveInventory($id, Request $request, SerializerInterface $serializer)
-    {
-        $roles = $this->getUser()->getRoles();
-        // Check if current user is admin
-        if(in_array('ROLE_ADMIN', $roles)){
-            $inventory = $this->getDoctrine()
-                        ->getRepository(Inventory::class)
-                        ->findOneBy(['id'=> $id]);
-
-            if(empty($inventory)){
-                $response = array(
-                    'code' => 404,
-                    'errors' => 'no inventory',
-                    'result' => null
-                );  
-                return new JsonResponse($response, 404);           
-            }           
             
-            $em = $this->getDoctrine()->getManager();
-            $inventory->setStatus("new");
-            $inventory->removeDisposeAt();
-
-            // chande servicing status
-            $inventory->getServicing()->setStatus("not required");
+            if($action === 'dispose'){
+                $inventory->setStatus("disposed");
+                $inventory->setDisposeAt(new \DateTime('NOW'));
+                $inventory->getServicing()->setStatus("disposed");
+            } else if($action === 'revive'){
+                $inventory->setStatus("active");
+                $inventory->removeDisposeAt();
+                $inventory->getServicing()->setStatus("not required");
+            }
 
             $em->persist($inventory);
             $em->flush();
 
-            $response = array(
-                'code'=> 0,
-                'errors'=>null,
-                'result'=>null
-            );
-            return new JsonResponse($response, 200); 
+            return $this->getInventory($inventory->getId());
         }
         $response = array(
             'code' => 401,

@@ -24,43 +24,53 @@ class UserController extends AbstractController
         // Check if current user is admin
         $roles = $this->getUser()->getRoles();
         $designation = $this->getUser()->getDesignation();
-        if(in_array('ROLE_ADMIN', $roles) || $designation === 'CEO'){
-            $user = new User();
-            $parameters = json_decode($request->getContent(), true);
-            $user->setEmail($parameters['email']);
-            $user->setPassword($encoder->hashPassword($user, $parameters['password']));
-            $user->setFullName($parameters['fullName']);
-            $user->setCreatedAt(new \DateTimeImmutable('NOW'));
-            $joinDate = new \DateTime(); 
-            $joinDate->createFromFormat('j-M-Y', $parameters['joinedAt']);
-            $user->setJoinedAt($joinDate);
-            $user->setStatus('active');
-            $parameters['designation'] !== 'CEO' ?
-                $user->setDesignation($parameters['designation']) :
-                $user->setDesignation('employee');
-            if($designation === 'CEO') {
-                !empty($parameters['role']) ? 
-                    $user->setRoles([$parameters['role']]) : 
-                    $user->setRoles(['ROLE_USER']);
-            } else {
-                $user->setRoles(['ROLE_USER']);
-            }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            $response = array(
-                'code' => 200,
-                'errors' => null,
-                'result' => null
-            );
-            return new JsonResponse($response, 200);
-        }
-        $response = array(
+        if(!in_array('ROLE_ADMIN', $roles) || $designation !== 'CEO'){
+           $response = array(
             'code' => 401,
             'errors' => 'unauthorized',
             'result' => null
-        );
-        return new JsonResponse($response, 401);  
+            );  
+            return new JsonResponse($response, 401);  
+        }
+
+        $parameters = json_decode($request->getContent(), true);
+        
+        //check if user already exists
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $parameters['email']]);
+        if($user){
+            $response = array(
+                'code' => 401,
+                'errors' => 'user already exists',
+                'result' => null
+            );
+            return new JsonResponse($response, 401);  
+        }
+                       
+        $user = new User();
+        $user->setEmail($parameters['email']);
+        $user->setPassword($encoder->hashPassword($user, $parameters['password']));
+        $user->setFullName($parameters['fullName']);
+        $user->setCreatedAt(new \DateTimeImmutable('NOW'));
+        $joinDate = new \DateTime(); 
+        $joinDate->createFromFormat('j-M-Y', $parameters['joinedAt']);
+        $user->setJoinedAt($joinDate);
+        $user->setStatus('active');
+        $parameters['designation'] !== 'CEO' ?
+            $user->setDesignation($parameters['designation']) :
+            $user->setDesignation('employee');
+        if($designation === 'CEO') {
+            !empty($parameters['role']) ? 
+                $user->setRoles([$parameters['role']]) : 
+                $user->setRoles(['ROLE_USER']);
+        } else {
+            $user->setRoles(['ROLE_USER']);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        
+        return $this->fetchUser($user->getId());
+        
     }
 
     /**
@@ -73,6 +83,7 @@ class UserController extends AbstractController
         $designation = $this->getUser()->getDesignation();
         if(in_array('ROLE_ADMIN', $roles)){
             $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+            
             // check if user is 'CEO'
             if($user->getDesignation() === 'CEO'){
                 $response = array(
@@ -103,12 +114,8 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $response = array(
-                'code' => 200,
-                'errors' => null,
-                'result' => null
-            );
-            return new JsonResponse($response, 200);
+            
+            return $this->fetchUser($user->getId());
         }
         $response = array(
             'code' => 401,
@@ -142,9 +149,9 @@ class UserController extends AbstractController
             $encoders = [new JsonEncoder()];
             $defaultContext = [
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                    return $object->getFullName();
+                    return $object->getId();
                 },
-                AbstractNormalizer::IGNORED_ATTRIBUTES => ['role']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'email', 'designation', 'joinedAt', 'status', 'fullName', 'leftAt', 'requests', 'roles']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
@@ -208,13 +215,50 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 
+            return $this->fetchUser($user->getId());
+        }
+        $response = array(
+            'code' => 401,
+            'errors' => 'unauthorized',
+            'result' => null
+        );  
+        return new JsonResponse($response, 401);  
+    }
 
+    /**
+     * @Route("/api/admin/users/{id}", name="get_user", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function fetchUser($id){
+         // Check if current user is admin
+         $roles = $this->getUser()->getRoles();
+         if(in_array('ROLE_ADMIN', $roles)){
+            $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+            if(empty($user)){
+                $response = array(
+                    'code' => 404,
+                    'errors' => 'No user',
+                    'result' => null
+                );
+                return new JsonResponse($response, 404);
+            }
+
+            $encoders = [new JsonEncoder()];
+            $defaultContext = [
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                    return $object->getId();
+                },
+                AbstractNormalizer::ATTRIBUTES => ['id', 'email', 'designation', 'joinedAt', 'status', 'fullName', 'leftAt', 'requests', 'roles']
+            ];
+            $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
+
+            $serializer = new Serializer($normalizers, $encoders);
+            $data = $serializer->serialize($user, 'json');
             $response = array(
                 'code' => 200,
                 'errors' => null,
-                'result' => null
+                'result' => json_decode($data)
             );
-            return new JsonResponse($response, 200);    
+            return new JsonResponse($response, 200);
         }
         $response = array(
             'code' => 401,

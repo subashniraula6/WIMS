@@ -70,6 +70,11 @@ class Inventory
      */
     private $servicing;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $serialNumber;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -202,6 +207,18 @@ class Inventory
         }
 
         $this->servicing = $servicing;
+
+        return $this;
+    }
+
+    public function getSerialNumber(): ?string
+    {
+        return $this->serialNumber;
+    }
+
+    public function setSerialNumber(string $serialNumber): self
+    {
+        $this->serialNumber = $serialNumber;
 
         return $this;
     }
