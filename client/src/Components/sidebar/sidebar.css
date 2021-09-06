@@ -7,7 +7,7 @@
 }
 
 .sidebarWrapper {
-	padding: 25px;
+	padding: 30px 10px;
 	color: #555;
 }
 .sidebarMenu {
@@ -31,6 +31,9 @@
 	align-items: center;
 	border-radius: 10px;
 	text-decoration: none;
+}
+.active {
+	background-color: white;
 }
 .sidebarListItem.active,
 .sidebarListItem:hover {

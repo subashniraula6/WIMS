@@ -29,7 +29,7 @@ const columns = [
 	{
 		field: "designation",
 		headerName: "Designation",
-		width: 150,
+		width: 170,
 		editable: true,
 	}
 ];
@@ -49,7 +49,7 @@ export default function UserList() {
     const dispatch = useDispatch();
     const userReducer = useSelector(store => store.userReducer);
     const { isLoading, users } = userReducer;
-    console.log(users)
+    
     useEffect(()=> {
         try {
             dispatch(fetchUsers())

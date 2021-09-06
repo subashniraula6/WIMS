@@ -6,13 +6,13 @@ import UserList from "../pages/user/UserList";
 export default function Dashboard() {
 	return (
 		<>
-			<div className="container">
+			<div className="container-fluid">
 				<h2 className="my-3 text-center">Dashboard</h2>
 				<div className="row">
-					<div className="col-lg-3 pr-auto">
+					<div className="col-lg-2">
 						<Sidebar />
 					</div>
-					<div className="col-lg-9">
+					<div className="col-lg-10">
 						<Switch>
 							<Route exact path="/dashboard/users" component={UserList} />
 							{/* <Route exact path="/dashboard/signup" component={SignUp} /> */}

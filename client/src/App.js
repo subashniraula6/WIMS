@@ -22,7 +22,7 @@ function App() {
 	return (
 	<>
 		<Topbar />
-		<div className="container-fluid px-lg-3">
+		<div className="container-fluid border px-lg-3">
 			<Switch>
 				<Route path='/homepage' exact component={Homepage} />
 				<Route path='/' exact component={Landing}/>
