@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./userList.css";
 import {fetchUsers} from '../../Redux/actions/userActions'
 import Spinner from "../../Spinner/Spinner";
+import AddUserModal from "../../AddUserModal";
 
 const columns = [
 	{ field: "id", headerName: "ID", width: 100 },
@@ -31,7 +32,31 @@ const columns = [
 		headerName: "Designation",
 		width: 170,
 		editable: true,
-	}
+	},
+	{
+		field: "status",
+		headerName: "Status",
+		width: 170,
+		editable: true,
+	},
+	{
+		field: "joinedAt",
+		headerName: "Joined At",
+		width: 170,
+		editable: true,
+	},
+	{
+		field: "createdAt",
+		headerName: "Created At",
+		width: 170,
+		editable: true,
+	},
+	{
+		field: "addedBy",
+		headerName: "Added By",
+		width: 170,
+		editable: true,
+	},
 ];
 
 // const rows = [
@@ -63,7 +88,11 @@ export default function UserList() {
             fullName: user.fullName,
             email: user.email,
             role: user.roles[0],
-            designation: user.designation
+            designation: user.designation,
+			status: user.status,
+			joinedAt: user.joinedAt,
+			createdAt: user.createdAt,
+			addedBy: user.addedBy
         }
     })
     if(isLoading) return <Spinner />
@@ -72,6 +101,15 @@ export default function UserList() {
 			<div className="card-header bg-warning text-white text-center mt-1">
 				User List
 			</div>
+			<AddUserModal />
+			<div>
+				{/* <button 
+				className='btn btn-warning my-2 ms-auto'
+				onClick={handleAddUser}
+				>
+				Add user
+				</button> */}
+			</div>
 			<div
 				className="container border border-dark rounded my-3 p-2"
 				style={{ height: 400, width: "100%" }}
@@ -79,7 +117,7 @@ export default function UserList() {
 				<DataGrid
 					rows={rows}
 					columns={columns}
-					pageSize={5}
+					pageSize={10}
 					checkboxSelection
 					disableSelectionOnClick
 				/>

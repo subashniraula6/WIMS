@@ -20,6 +20,7 @@ export default function userReducer(state=INITIAl_STATE, action){
                 isLoading: false
             }
         case 'GET_USERS_ERROR':
+        case 'ADD_USER_ERROR':
             return {
                 ...state,
                 error: action.payload,

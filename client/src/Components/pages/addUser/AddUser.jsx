@@ -13,12 +13,12 @@ import {
 export default function AddUser() {
 	return (
 		<>
-			<div className="main container border border-primary bg-light">
-				<div className="card-header bg-warning text-white text-center mx-2 my-2 border border-primary">
+			<div className="main container bg-light border border-light">
+				<div className="card-header bg-warning text-white text-center mx-2 my-2">
 					<PersonAdd /> Add New User
 				</div>
 				<form>
-					<div className="container border border-danger mx-2 my-2">
+					<div className="container mx-2 my-2">
 						<div class="form-group my-2">
 							<label>
 								<Person />

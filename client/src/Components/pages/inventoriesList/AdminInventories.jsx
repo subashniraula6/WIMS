@@ -36,7 +36,19 @@ const columns = [
 		headerName: "User",
 		width: 200,
 		editable: true,
-	}
+	},
+	{
+		field: "createdAt",
+		headerName: "Created At",
+		width: 200,
+		editable: true,
+	},
+	{
+		field: "disposedAt",
+		headerName: "Disposed At",
+		width: 200,
+		editable: true,
+	},
 ];
 
 export default function InventoriesList() {
@@ -57,7 +69,9 @@ export default function InventoriesList() {
 			category: inv.category,
 			serialNumber: inv.serialNumber,
 			status: inv.status,
-			user: inv.user.fullName
+			user: inv.user.fullName,
+			createdAt: inv.createdAt,
+			disposedAt: inv.disposeAt
         }
     })
 	
