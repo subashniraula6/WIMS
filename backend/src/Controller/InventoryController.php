@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -45,7 +46,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
     
@@ -86,7 +87,7 @@ class InventoryController extends AbstractController
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                 return $object->getName();
             },
-            AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
+            AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt']
         ];
         $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
@@ -129,9 +130,9 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt']
             ];
-            $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
+            $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext), new DateTimeNormalizer()];
             $serializer = new Serializer($normalizers, $encoders);
             $data = $serializer->serialize($inventory, 'json');
             $response = array(

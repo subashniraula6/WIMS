@@ -61,6 +61,6 @@ export default function inventoryReducer(state=INITIAl_STATE, action){
                 })
             }          
         default:
-            return {...state}
+            return state
     }
 }

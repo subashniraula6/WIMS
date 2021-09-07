@@ -38,6 +38,11 @@ function App() {
 					path="/dashboard/inventories"
 					component={Dashboard}
 				/>
+				<AdminRoute
+					exact
+					path="/dashboard/servicings"
+					component={Dashboard}
+				/>
 				<UserRoute
 					exact
 					path="/inventories"

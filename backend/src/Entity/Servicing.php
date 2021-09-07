@@ -43,12 +43,12 @@ class Servicing
         return $this->id;
     }
 
-    public function getServiceAt(): ?\DateTimeInterface
+    public function getServiceAt(): ?\DateTime
     {
         return $this->serviceAt;
     }
 
-    public function setServiceAt(?\DateTimeInterface $serviceAt): self
+    public function setServiceAt(?\DateTime $serviceAt): self
     {
         $this->serviceAt = $serviceAt;
 
