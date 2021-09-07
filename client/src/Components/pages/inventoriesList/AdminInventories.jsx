@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getInventories } from '../../Redux/actions/inventoryactions'
 import Spinner from "../../Spinner/Spinner";
+import AddinventoryModal from "../../AddInventoryModal";
 
 const columns = [
 	{ field: "id", headerName: "ID", width: 120 },
@@ -81,6 +82,7 @@ export default function InventoriesList() {
 			<div className="card-header bg-warning text-white text-center mt-1">
 				Inventories List
 			</div>
+			<AddinventoryModal />
 			<div
 				className="container border border-dark rounded my-3 p-2"
 				style={{ height: 400, width: "100%" }}

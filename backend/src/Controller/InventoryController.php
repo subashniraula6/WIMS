@@ -161,10 +161,10 @@ class InventoryController extends AbstractController
             $inventory = $serializer->deserialize($request->getContent(), Inventory::class, 'json');
             
             $parameters = json_decode($request -> getContent(), true); 
-            $user_email = $parameters['user_email'];
+            $userEmail = $parameters['userEmail'];
 
             //Allocating user
-            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $user_email]);
+            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $userEmail]);
             if(empty($user)){
                 $response = array(
                     'code' => 404,
@@ -179,12 +179,13 @@ class InventoryController extends AbstractController
             $inventory->setStatus('active');
 
             //Adding Servicing
-            $servicing_duration = $parameters['servicing_duration'];
+            $servicingDuration = $parameters['servicingDuration'];
             $servicing = new Servicing();
-            $servicing->setDurationInMonth($servicing_duration);
+            $servicing->setDurationInMonth($servicingDuration);
+            $servicing->setStatus('active');
 
             $date = new DateTime('NOW');
-            $date->add(new DateInterval('P'.$servicing_duration.'M'));      
+            $date->add(new DateInterval('P'.$servicingDuration.'M'));      
             $servicing->setServiceAt($date); 
             $inventory->setServicing($servicing);
             
@@ -236,7 +237,7 @@ class InventoryController extends AbstractController
             $inventory->setSerialNumber($parameters['serialNumber']);
 
             // change user
-            $new_user_email = $parameters['user_email'];
+            $new_user_email = $parameters['userEmail'];
             $new_user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $new_user_email]);
         
             if($inventory->getUser() !== $new_user){

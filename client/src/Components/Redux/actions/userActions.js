@@ -4,7 +4,7 @@ export const fetchUsers = () => async dispatch => {
     try {
         // check if token is present
         const token = localStorage.token;
-      
+        
         const headers = {
             'Authorization': `Bearer ${token}`
         }
@@ -32,6 +32,7 @@ export const fetchUsers = () => async dispatch => {
 }
 export const addUser = (user) => async dispatch => {
     try {
+        console.log(user)
         // check if token is present
         const token = localStorage.token;
         

@@ -1,7 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import "./userList.css";
+// import "./userList.css";
 import {fetchUsers} from '../../Redux/actions/userActions'
 import Spinner from "../../Spinner/Spinner";
 import AddUserModal from "../../AddUserModal";

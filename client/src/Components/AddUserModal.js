@@ -55,7 +55,7 @@ export default function AddUserModal() {
       fullName: "",
       email: "",
       password: "",
-      designation: "",
+      designation: "Engineer",
       role: "",
       joinedAt: ""
     })
@@ -71,7 +71,7 @@ export default function AddUserModal() {
       console.log('submitted')
       try {
           dispatch(addUser(user));
-          handleClose();
+          setOpen(false)
       } catch (error) {
           console.log(error)
       }
@@ -98,6 +98,7 @@ export default function AddUserModal() {
                                 onChange={handleChange}
                                 name="fullName"
                                 value={user.fullName}
+								required
 							></input>
 						</div>
 						<div className="form-group my-2">
@@ -112,6 +113,7 @@ export default function AddUserModal() {
                                 name="email"
                                 value={user.email}
                                 onChange={handleChange}
+								required
 							></input>
 						</div>
 						<div className="form-group mt-2">
@@ -126,6 +128,7 @@ export default function AddUserModal() {
                                 name="password"
                                 value={user.password}
                                 onChange={handleChange}
+								required
 							/>
 						</div>
 
@@ -135,9 +138,8 @@ export default function AddUserModal() {
 									<Work /> Designation
 								</label>
 							</div>
-							<select className="custom-select" id="inputGroupSelect01" name="designation" value={user.designation} onChange={handleChange}>
-                                <option value="0">* Select your position</option>
-                                <option value="Engineer">Engineer</option>
+							<select className="custom-select" id="inputGroupSelect01" name="designation" value={user.designation} onChange={handleChange} required>
+                                <option defaultValue="Engineer">Engineer</option>
 								<option value="HR">HR</option>
 								<option value="Intern">Intern</option>
 							</select>
@@ -149,9 +151,8 @@ export default function AddUserModal() {
 									<EmojiPeople /> Role
 								</label>
 							</div>
-							<select className="custom-select" id="inputGroupSelect01" name="role" value={user.role} onChange={handleChange}>
-                                <option value="0">* Select your role</option>
-                                <option value="ROLE_USER">User</option>
+							<select className="custom-select" id="inputGroupSelect01" name="role" value={user.role} onChange={handleChange} required>
+                                <option defaultValue="ROLE_USER">User</option>
 								<option value="ROLE_ADMIN">Admin</option>
 							</select>
 						</div>
@@ -167,6 +168,7 @@ export default function AddUserModal() {
                                 name='joinedAt'
                                 value={user.joinedAt}
                                 onChange={handleChange}
+								required
 							></input>
 						</div>
 
