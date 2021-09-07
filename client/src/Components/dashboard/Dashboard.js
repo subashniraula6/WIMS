@@ -2,9 +2,8 @@ import React from "react";
 import Sidebar from "../sidebar/Sidebar";
 import { Route, Switch } from "react-router-dom";
 import UserList from "../pages/user/UserList";
-import AdminRoute from "../routing/AdminRoute";
 import AdminInventories from "../pages/inventoriesList/AdminInventories";
-import servicingList from "../servicings/ServicingList";
+import ServicingList from "../servicings/ServicingList";
 
 export default function Dashboard() {
 	return (
@@ -19,7 +18,7 @@ export default function Dashboard() {
 						<Switch>
 							<Route exact path="/dashboard/users" component={UserList} />
 							<Route exact path="/dashboard/inventories" component={AdminInventories} />
-							<Route exact path="/dashboard/servicings" component={servicingList} />
+							<Route exact path="/dashboard/servicings" component={ServicingList} />
 						</Switch>
 					</div>
 				</div>

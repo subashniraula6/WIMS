@@ -43,9 +43,9 @@ class Servicing
         return $this->id;
     }
 
-    public function getServiceAt(): ?\DateTime
+    public function getServiceAt(): ?string
     {
-        return $this->serviceAt;
+        return $this->serviceAt->format('Y-m-d');
     }
 
     public function setServiceAt(?\DateTime $serviceAt): self

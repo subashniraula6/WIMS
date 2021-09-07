@@ -20,7 +20,7 @@ const columns = [
 		editable: true,
 	},
 	{
-		field: "remaining",
+		field: "remainingDays",
 		headerName: "Remaining days",
 		width: 180,
 		editable: true,
@@ -52,12 +52,13 @@ export default function ServicingList() {
 		}
 	}, [])
 	const rows = servicings.map(serv => {
-        return {
+		const remainingDays = Math.round((new Date(serv.serviceAt) - new Date())/(1000*60*60*24))
+		return {
             id: serv.id,
 			inventory: serv.inventory.name,
-			servivingDate: serv.serviceAt,
-			remainingDays: serv.serviceAt,
-			status: serv.status,
+			servicingDate: serv.serviceAt,
+			remainingDays: remainingDays,
+			status: (remainingDays<0) ? 'Required': 'Not required',
 			duration: serv.durationInMonth
         }
     })
