@@ -140,9 +140,9 @@ class Inventory
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?string
     {
-        return $this->createdAt;
+        return $this->createdAt->format('Y-m-d');
     }
 
     public function setCreatedAt(\DateTime $createdAt): self
@@ -152,9 +152,9 @@ class Inventory
         return $this;
     }
 
-    public function getDisposeAt(): ?\DateTime
+    public function getDisposeAt(): ?string
     {
-        return $this->disposeAt;
+        return $this->disposeAt->format('Y-m-d');
     }
 
     public function setDisposeAt(\DateTime $disposeAt): self
