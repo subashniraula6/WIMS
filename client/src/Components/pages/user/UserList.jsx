@@ -5,6 +5,7 @@ import "./userList.css";
 import {fetchUsers} from '../../Redux/actions/userActions'
 import Spinner from "../../Spinner/Spinner";
 import AddUserModal from "../../AddUserModal";
+import { makeStyles } from '@material-ui/styles';
 
 const columns = [
 	{ field: "id", headerName: "ID", width: 100 },
@@ -58,22 +59,20 @@ const columns = [
 		editable: true,
 	},
 ];
-
-// const rows = [
-// 	{
-// 		id: 1,
-// 		fullName: "Jon Snow",
-// 		role: "Jon",
-// 		email: "jon@gmail.com",
-// 		devices: "Laptop"
-// 	}
-// ];
-
+const useStyles = makeStyles({
+	root: {
+	  '& .super-app-theme--header': {
+		backgroundColor: 'red',
+	  },
+	},
+  });
 
 export default function UserList() {
     const dispatch = useDispatch();
     const userReducer = useSelector(store => store.userReducer);
     const { isLoading, users } = userReducer;
+
+	const classes = useStyles();
     
     useEffect(()=> {
         try {
@@ -111,7 +110,7 @@ export default function UserList() {
 				</button> */}
 			</div>
 			<div
-				className="container border border-dark rounded my-3 p-2"
+				className={classes.root}
 				style={{ height: 400, width: "100%" }}
 			>
 				<DataGrid
