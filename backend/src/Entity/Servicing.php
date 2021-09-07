@@ -23,11 +23,6 @@ class Servicing
     private $serviceAt;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $status;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $durationInMonth;
@@ -51,18 +46,6 @@ class Servicing
     public function setServiceAt(?\DateTime $serviceAt): self
     {
         $this->serviceAt = $serviceAt;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }

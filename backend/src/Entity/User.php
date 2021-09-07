@@ -133,7 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->joinedAt->format('Y-m-d');
     }
 
-    public function setJoinedAt(\DateTimeInterface $joinedAt): self
+    public function setJoinedAt(\DateTime $joinedAt): self
     {
         $this->joinedAt = $joinedAt;
 
@@ -166,10 +166,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getLeftAt(): ?string
     {
-        return $this->leftAt->format('Y-m-d');
+        return $this->leftAt;
     }
 
-    public function setLeftAt(?\DateTimeInterface $leftAt): self
+    public function setLeftAt(?\Datetime $leftAt): self
     {
         $this->leftAt = $leftAt;
 
@@ -302,7 +302,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCreatedAt(): ?string
     {
-        return $this->createdAt->format('Y-m-d');
+        return $this->createdAt->format('y-m-d');
     }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self

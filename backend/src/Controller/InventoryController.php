@@ -46,7 +46,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt', 'disposeAt']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
     
@@ -87,7 +87,7 @@ class InventoryController extends AbstractController
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                 return $object->getName();
             },
-            AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt']
+            AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt', 'disposeAt']
         ];
         $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
@@ -130,7 +130,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt', 'disposeAt']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext), new DateTimeNormalizer()];
             $serializer = new Serializer($normalizers, $encoders);
@@ -176,12 +176,11 @@ class InventoryController extends AbstractController
             $inventory-> setUser($user);
 
             $inventory->setCreatedAt(new DateTime('NOW'));
-            $inventory->setStatus('new');
+            $inventory->setStatus('active');
 
             //Adding Servicing
             $servicing_duration = $parameters['servicing_duration'];
             $servicing = new Servicing();
-            $servicing->setStatus('not required');
             $servicing->setDurationInMonth($servicing_duration);
 
             $date = new DateTime('NOW');
