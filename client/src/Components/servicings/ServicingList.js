@@ -66,12 +66,12 @@ export default function ServicingList() {
 	if(isLoading) 
 		return <Spinner />
 	return (
-		<div className="container border border-warning rounded my-3 bg-light">
+		<div className="container rounded my-3 bg-light">
 			<div className="card-header bg-warning text-white text-center mt-1">
 				Servicings List
 			</div>
 			<div
-				className="container border border-dark rounded my-3 p-2"
+				className="container rounded p-2"
 				style={{ height: 400, width: "100%" }}
 			>
 				<DataGrid

@@ -186,7 +186,7 @@ export default function AddUserModal() {
 
   return (
     <div>
-      <button className="btn btn-info mt-2" onClick={handleOpen}>
+      <button className="btn btn-info my-2" onClick={handleOpen}>
         Add user
       </button>
       <Modal

@@ -52,7 +52,7 @@ const columns = [
 	},
 ];
 
-export default function InventoriesList() {
+export default function AdminInventories() {
 	const dispatch = useDispatch();
 	const inventoryReducer = useSelector(store => store.inventoryReducer);
     const { isLoading, adminInventories } = inventoryReducer;
@@ -78,13 +78,13 @@ export default function InventoriesList() {
 	
 	if(isLoading) return <Spinner />
 	return (
-		<div className="container border border-warning rounded my-3 bg-light">
+		<div className="container rounded my-3 bg-light">
 			<div className="card-header bg-warning text-white text-center mt-1">
 				Inventories List
 			</div>
 			<AddinventoryModal />
 			<div
-				className="container border border-dark rounded my-3 p-2"
+				className="container rounded p-2"
 				style={{ height: 400, width: "100%" }}
 			>
 				<DataGrid

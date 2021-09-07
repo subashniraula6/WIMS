@@ -116,7 +116,7 @@ export default function UserList() {
 				<DataGrid
 					rows={rows}
 					columns={columns}
-					pageSize={10}
+					pageSize={5}
 					checkboxSelection
 					disableSelectionOnClick
 				/>

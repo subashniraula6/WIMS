@@ -97,7 +97,7 @@ export default function AddinventoryModal() {
 					<Store /> Add New Inventories
 				</div>
 				<form onSubmit={handleSubmit}>
-					<div className="container border mx-2 my-2">
+					<div className="container mx-2 my-2">
 						<div className="form-group my-2">
 							<label>
 								<Person />
