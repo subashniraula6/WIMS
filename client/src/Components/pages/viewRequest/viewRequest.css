@@ -1,0 +1,14 @@
+.requestAccept {
+	background-color: green;
+	width: 50px;
+}
+
+.requestDelete {
+	background-color: red;
+	width: 50px;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-around;
+}

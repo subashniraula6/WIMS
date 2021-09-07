@@ -1,0 +1,8 @@
+.devicecontainer {
+	display: flex;
+	justify-content: space-between;
+}
+
+.headerbg {
+	background-color: orange;
+}
