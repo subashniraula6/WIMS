@@ -33,6 +33,11 @@ class Servicing
      */
     private $inventory;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $status;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class Servicing
     public function setInventory(Inventory $inventory): self
     {
         $this->inventory = $inventory;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

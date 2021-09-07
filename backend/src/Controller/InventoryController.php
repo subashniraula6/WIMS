@@ -295,7 +295,7 @@ class InventoryController extends AbstractController
             } else if($action === 'revive'){
                 $inventory->setStatus("active");
                 $inventory->removeDisposeAt();
-                $inventory->getServicing()->setStatus("not required");
+                $inventory->getServicing()->setStatus("active");
             }
 
             $em->persist($inventory);

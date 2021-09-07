@@ -153,8 +153,8 @@ class Inventory
     }
 
     public function getDisposeAt(): ?string
-    {
-        return $this->disposeAt->format('Y-m-d');
+    {   
+        return $this->disposeAt ? $this->disposeAt->format('Y-m-d'): null;
     }
 
     public function setDisposeAt(\DateTime $disposeAt): self

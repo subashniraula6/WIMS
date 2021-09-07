@@ -77,6 +77,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $addedBy;
+
     public function __construct()
     {
         $this->requests = new ArrayCollection();
@@ -308,6 +313,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getAddedBy(): ?string
+    {
+        return $this->addedBy;
+    }
+
+    public function setAddedBy(string $addedBy): self
+    {
+        $this->addedBy = $addedBy;
 
         return $this;
     }

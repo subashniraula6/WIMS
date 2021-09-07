@@ -51,6 +51,7 @@ class UserController extends AbstractController
         $user->setPassword($encoder->hashPassword($user, $parameters['password']));
         $user->setFullName($parameters['fullName']);
         $user->setCreatedAt(new \DateTimeImmutable('NOW'));
+        $user->setAddedBy($this->getUser()->getFullName());
         $joinDate = new \DateTime(); 
         $joinDate->createFromFormat('j-M-Y', $parameters['joinedAt']);
         $user->setJoinedAt($joinDate);
@@ -151,7 +152,7 @@ class UserController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getId();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'email', 'designation', 'joinedAt', 'status', 'fullName', 'leftAt', 'requests', 'roles']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'email', 'designation', 'joinedAt', 'status', 'fullName', 'leftAt', 'requests', 'roles', 'createdAt', 'addedBy']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
@@ -247,7 +248,7 @@ class UserController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getId();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'email', 'designation', 'joinedAt', 'status', 'fullName', 'leftAt', 'requests', 'roles']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'email', 'designation', 'joinedAt', 'status', 'fullName', 'leftAt', 'requests', 'roles', 'createdAt', 'addedBy']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext)];
 
