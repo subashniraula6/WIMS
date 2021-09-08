@@ -206,6 +206,9 @@ export default function AddinventoryModal() {
 							<button type="submit" className="btn btn-outline-success mt-3">
 								Add
 							</button>
+              <button className="btn ms-2 btn-outline-secondary mt-3" onClick={()=>setOpen(false)}>
+								Cancel
+							</button>
 						</div>
 					</div>
 				</form>

@@ -176,6 +176,7 @@ export default function AddUserModal() {
 							<button type="submit" className="btn btn-outline-success mt-3 btn-block">
 								Add
 							</button>
+							<button className="btn ms-2 btn-outline-secondary mt-3" onClick={()=>setOpen(false)}>Cancel</button>
 						</div>
 					</div>
 				</form>

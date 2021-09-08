@@ -32,7 +32,7 @@ const Login = function () {
 	}
 	if(isAuthenticated) return <Redirector />
 	return (
-		<div className="container d-flex justify-content-center">
+		<div className="container d-flex justify-content-center my-5">
 			<form className="form p-5 formContainer" onSubmit={handleSubmit}>
 				<h3 className="h2">Log in</h3>
 
