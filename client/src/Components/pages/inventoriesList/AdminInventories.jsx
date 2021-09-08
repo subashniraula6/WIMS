@@ -4,66 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getInventories } from '../../Redux/actions/inventoryactions'
 import Spinner from "../../Spinner/Spinner";
 import AddinventoryModal from "../../AddInventoryModal";
-import { Button } from "@material-ui/core";
 import { Link, Route, Switch } from "react-router-dom";
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
-
-const columns = [
-	{
-		field: "view",
-		headerName: 'View',
-		width: 120,
-		renderCell: (params) => (
-			<Link to={`/dashboard/inventories/${params.id}`}>
-				<ZoomOutMapIcon style={{fontSize: '1.8rem'}}/>
-			</Link>
-		)
-	},
-	{ field: "id", headerName: "ID", width: 120 },
-
-	{
-		field: "brand",
-		headerName: "Brand",
-		sortable: false,
-		width: 160,
-	},
-	{
-		field: "category",
-		headerName: "Category",
-		width: 150,
-		editable: true,
-	},
-	{
-		field: "serialNumber",
-		headerName: "Serial Number",
-		width: 200,
-		editable: true,
-	},
-	{
-		field: "status",
-		headerName: "Status",
-		width: 200,
-		editable: true,
-	},
-	{
-		field: "user",
-		headerName: "User",
-		width: 200,
-		editable: true,
-	},
-	{
-		field: "createdAt",
-		headerName: "Created At",
-		width: 200,
-		editable: true,
-	},
-	{
-		field: "disposedAt",
-		headerName: "Disposed At",
-		width: 200,
-		editable: true,
-	},
-];
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import { disposeInventory } from '../../Redux/actions/inventoryactions'
+import { reviveInventory } from '../../Redux/actions/inventoryactions'
 
 export default function AdminInventories() {
 	const dispatch = useDispatch();
@@ -76,6 +23,70 @@ export default function AdminInventories() {
 			console.log(error)
 		}
 	}, [])
+	const columns = [
+		{
+			field: "view",
+			headerName: 'View',
+			width: 120,
+			renderCell: (params) => (
+				<>
+					<Link to={`/dashboard/inventories/${params.id}`}>
+						<ZoomOutMapIcon style={{fontSize: '1.8rem'}}/>
+					</Link>
+					<EditIcon style={{fontSize: '1.8rem'}}/>
+					{(params.row.status==='disposed') ? 
+						<RestoreFromTrashIcon onClick={()=>dispatch(reviveInventory(params.id))} style={{fontSize: '1.8rem'}}/>
+						: 
+						<DeleteIcon onClick={()=>dispatch(disposeInventory(params.id))} style={{fontSize: '1.8rem'}}/>}
+				</>
+			)
+		},
+		{ field: "id", headerName: "ID", width: 120 },
+	
+		{
+			field: "brand",
+			headerName: "Brand",
+			sortable: false,
+			width: 160,
+		},
+		{
+			field: "category",
+			headerName: "Category",
+			width: 150,
+			editable: true,
+		},
+		{
+			field: "serialNumber",
+			headerName: "Serial Number",
+			width: 200,
+			editable: true,
+		},
+		{
+			field: "status",
+			headerName: "Status",
+			width: 200,
+			editable: true,
+		},
+		{
+			field: "user",
+			headerName: "User",
+			width: 200,
+			editable: true,
+		},
+		{
+			field: "createdAt",
+			headerName: "Created At",
+			width: 200,
+			editable: true,
+		},
+		{
+			field: "disposedAt",
+			headerName: "Disposed At",
+			width: 200,
+			editable: true,
+		},
+	];
+	
 	const rows = adminInventories.map(inv => {
         return {
             id: inv.id,

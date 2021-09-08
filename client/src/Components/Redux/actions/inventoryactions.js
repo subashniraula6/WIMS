@@ -63,6 +63,7 @@ export const addInventory = (inventory) => async dispatch => {
         })
     }
 }
+
 export const getInventory = (id) => async dispatch => {
     try {
         // check if token is present
@@ -89,6 +90,69 @@ export const getInventory = (id) => async dispatch => {
         console.log(error)
         dispatch({
             type: 'GET_INVENTORY_ERROR',
+            payload: error.reponse
+        })
+    }
+}
+
+export const disposeInventory = (id) => async dispatch => {
+    try {
+        // check if token is present
+        const token = localStorage.token;
+        
+        const headers = {
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.put(`/api/admin/inventories/${id}/dispose`, null, {headers});
+        if(response.data.error){
+            dispatch({
+                type: 'DISPOSE_INVENTORY_ERROR',
+                payload: response.data.error
+            })
+            alert('dispose inventory success')
+        } else {
+            const inventory = response.data.result;
+            dispatch({
+                type: 'DISPOSE_INVENTORY_SUCCESS',
+                payload: inventory
+            })
+        }
+        
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: 'DISPOSE_INVENTORY_ERROR',
+            payload: error.reponse
+        })
+    }
+}
+export const reviveInventory = (id) => async dispatch => {
+    try {
+        // check if token is present
+        const token = localStorage.token;
+        
+        const headers = {
+            'Authorization': `Bearer ${token}`
+        }
+        const response = await axios.put(`/api/admin/inventories/${id}/revive`, null, {headers});
+        if(response.data.error){
+            dispatch({
+                type: 'REVIVE_INVENTORY_ERROR',
+                payload: response.data.error
+            })
+            alert('dispose inventory success')
+        } else {
+            const inventory = response.data.result;
+            dispatch({
+                type: 'REVIVE_INVENTORY_SUCCESS',
+                payload: inventory
+            })
+        }
+        
+    } catch (error) {
+        console.log(error)
+        dispatch({
+            type: 'REVIVE_INVENTORY_ERROR',
             payload: error.reponse
         })
     }
