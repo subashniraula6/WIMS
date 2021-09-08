@@ -27,7 +27,7 @@ export default function inventoryReducer(state=INITIAl_STATE, action){
                 isLoading: false
             }
         case 'GET_INVENTORIES_ERROR':
-        case 'GET_INVENTORIES_ERROR':
+        case 'GET_INVENTORY_ERROR':
             return {
                 ...state,
                 error: action.payload,

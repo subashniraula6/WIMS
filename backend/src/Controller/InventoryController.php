@@ -130,7 +130,7 @@ class InventoryController extends AbstractController
                 AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                     return $object->getName();
                 },
-                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt', 'disposeAt']
+                AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'brand', 'model', 'status', 'description', 'category', 'user', 'email', 'fullName', 'serialNumber', 'createdAt', 'disposeAt', 'designation']
             ];
             $normalizers = [new ObjectNormalizer(null, null, null, null, null, null, $defaultContext), new DateTimeNormalizer()];
             $serializer = new Serializer($normalizers, $encoders);

@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import { XGrid } from '@material-ui/x-grid'
 import { useDispatch, useSelector } from "react-redux";
 import { getServicings } from '../Redux/actions/servicingAction'
 import Spinner from "../Spinner/Spinner";
@@ -78,7 +77,7 @@ export default function ServicingList() {
 				Servicings List
 			</div>
 			<Paper component={Box} style={{height: 500, width: "100%"}}>
-				<XGrid
+				<DataGrid
 					rows={rows}
 					columns={columns}
 					pageSize={5}

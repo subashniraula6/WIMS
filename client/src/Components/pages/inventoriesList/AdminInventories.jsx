@@ -6,9 +6,19 @@ import Spinner from "../../Spinner/Spinner";
 import AddinventoryModal from "../../AddInventoryModal";
 import { Button } from "@material-ui/core";
 import { Link, Route, Switch } from "react-router-dom";
-
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 
 const columns = [
+	{
+		field: "view",
+		headerName: 'View',
+		width: 120,
+		renderCell: (params) => (
+			<Link to={`/dashboard/inventories/${params.id}`}>
+				<ZoomOutMapIcon style={{fontSize: '1.8rem'}}/>
+			</Link>
+		)
+	},
 	{ field: "id", headerName: "ID", width: 120 },
 
 	{
@@ -16,14 +26,6 @@ const columns = [
 		headerName: "Brand",
 		sortable: false,
 		width: 160,
-	},
-	{
-		field: "view inventory",
-		headerName: 'View inventory',
-		width: 200,
-		renderCell: (params) => (
-			<Button>View Item</Button>
-		)
 	},
 	{
 		field: "category",
@@ -96,7 +98,7 @@ export default function AdminInventories() {
 			<AddinventoryModal />
 			<div
 				className="container rounded p-2"
-				style={{ height: 400, width: "100%" }}
+				style={{ height: 500, width: "100%" }}
 			>
 				<DataGrid
 					rows={rows}

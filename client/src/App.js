@@ -13,6 +13,7 @@ import NoRoute from "./Components/pages/NoRoute";
 import AdminRoute from "./Components/routing/AdminRoute";
 import UserRoute from './Components/routing/UserRoute';
 import AdminInventories from './Components/pages/inventoriesList/AdminInventories'
+import Inventory from "./Components/pages/Inventory/Inventory";
 
 function App() {
 	const dispatch = useDispatch();
@@ -41,6 +42,11 @@ function App() {
 					exact
 					path="/dashboard/servicings"
 					component={Dashboard}
+				/>
+				<AdminRoute
+					exact
+					path="/dashboard/inventories/:id"
+					component={Inventory}
 				/>
 				<Route path='*' exact component={NoRoute} />
 			</Switch>
