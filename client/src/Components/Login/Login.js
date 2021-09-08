@@ -33,71 +33,70 @@ const Login = function () {
 	if(isAuthenticated) return <Redirector />
 	return (
 		<div className="container d-flex justify-content-center">
-		<form className="form p-5 formContainer" onSubmit={handleSubmit}>
-			<h3 className="h2">Log in</h3>
+			<form className="form p-5 formContainer" onSubmit={handleSubmit}>
+				<h3 className="h2">Log in</h3>
 
-			<div className="form-group mt-2">
-				<label>Email</label>
-				<input
-					type="email"
-					className="form-control"
-					placeholder="Enter email"
-					name='email'
-					value={user.email}
-					onChange={handleChange}
-					required
-				/>
-			</div>
-
-			<div className="form-group mt-2">
-				<label>Password</label>
-				<input
-					type="password"
-					className="form-control"
-					placeholder="Enter password"
-					name='password'
-					value={user.password}
-					onChange={handleChange}
-					required
-					minLength={6}
-				/>
-			</div>
-			{
-				alert ? <div className="form-group mt-2 text-danger">
-						<i className="fas fa-exclamation-triangle m-2"></i>
-						<label>Incorrect email or password</label>
-						</div>
-						: null
-			}
-			
-			<div className="form-group mt-2">
-				<div className="custom-control custom-checkbox">
+				<div className="form-group mt-2">
+					<label>Email</label>
 					<input
-						type="checkbox"
-						className="custom-control-input"
-						id="customCheck1"
+						type="email"
+						className="form-control"
+						placeholder="Enter email"
+						name='email'
+						value={user.email}
+						onChange={handleChange}
+						required
 					/>
-					<label className="custom-control-label m-2" 
-						htmlFor="customCheck1">
-						Remember me
-					</label>
 				</div>
-			</div>
 
-			<button 
-				type="submit" 
-				className="btn btn-dark btn-lg btn-block" 
-			>
-				Sign in
-			</button>
-			<p className="forgot-password text-center mt-2">
-				<button href="#" className="forgotPW">
-					Forgot password?
+				<div className="form-group mt-2">
+					<label>Password</label>
+					<input
+						type="password"
+						className="form-control"
+						placeholder="Enter password"
+						name='password'
+						value={user.password}
+						onChange={handleChange}
+						required
+						minLength={6}
+					/>
+				</div>
+				{
+					alert ? <div className="form-group mt-2 text-danger">
+							<i className="fas fa-exclamation-triangle m-2"></i>
+							<label>Incorrect email or password</label>
+							</div>
+							: null
+				}
+				
+				<div className="form-group mt-2">
+					<div className="custom-control custom-checkbox">
+						<input
+							type="checkbox"
+							className="custom-control-input"
+							id="customCheck1"
+						/>
+						<label className="custom-control-label m-2" 
+							htmlFor="customCheck1">
+							Remember me
+						</label>
+					</div>
+				</div>
+
+				<button 
+					type="submit" 
+					className="btn btn-dark btn-lg btn-block" 
+				>
+					Sign in
 				</button>
-			</p>
+				<p className="forgot-password text-center mt-2">
+					<button href="#" className="forgotPW">
+						Forgot password?
+					</button>
+				</p>
 			</form>
-			<Link to='/dashboard/users'>dashboard</Link>
-			</div>
+		</div>
 	);
 };
 

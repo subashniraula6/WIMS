@@ -1,4 +1,4 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import "./userList.css";
@@ -101,14 +101,6 @@ export default function UserList() {
 				User List
 			</div>
 			<AddUserModal />
-			<div>
-				{/* <button 
-				className='btn btn-warning my-2 ms-auto'
-				onClick={handleAddUser}
-				>
-				Add user
-				</button> */}
-			</div>
 			<div
 				className={classes.root}
 				style={{ height: 400, width: "100%" }}
@@ -117,7 +109,6 @@ export default function UserList() {
 					rows={rows}
 					columns={columns}
 					pageSize={5}
-					checkboxSelection
 					disableSelectionOnClick
 				/>
 			</div>

@@ -16,6 +16,7 @@ import {addInventory} from './Redux/actions/inventoryactions'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from './Redux/actions/userActions'
 import BuildIcon from '@material-ui/icons/Build';
+import { useHistory } from 'react-router-dom';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;

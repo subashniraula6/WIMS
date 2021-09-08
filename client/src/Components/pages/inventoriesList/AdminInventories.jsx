@@ -1,9 +1,12 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getInventories } from '../../Redux/actions/inventoryactions'
 import Spinner from "../../Spinner/Spinner";
 import AddinventoryModal from "../../AddInventoryModal";
+import { Button } from "@material-ui/core";
+import { Link, Route, Switch } from "react-router-dom";
+
 
 const columns = [
 	{ field: "id", headerName: "ID", width: 120 },
@@ -13,6 +16,14 @@ const columns = [
 		headerName: "Brand",
 		sortable: false,
 		width: 160,
+	},
+	{
+		field: "view inventory",
+		headerName: 'View inventory',
+		width: 200,
+		renderCell: (params) => (
+			<Button>View Item</Button>
+		)
 	},
 	{
 		field: "category",
@@ -91,7 +102,6 @@ export default function AdminInventories() {
 					rows={rows}
 					columns={columns}
 					pageSize={5}
-					checkboxSelection
 					disableSelectionOnClick
 				/>
 			</div>
