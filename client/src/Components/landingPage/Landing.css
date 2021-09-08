@@ -1,0 +1,21 @@
+.title {
+	color: orange;
+	font-family: verdana;
+	font-size: 250%;
+	padding: 30px;
+	text-align: center;
+	font-family: monospace;
+}
+.flex-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.landingContainer {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -60%);
+	width: 100%;
+}
